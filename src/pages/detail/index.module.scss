@@ -1,0 +1,250 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 180rpx;
+}
+
+.postDetail {
+  background: $color-bg-card;
+  border-radius: 0 0 $radius-xl $radius-xl;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.detailZone {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  gap: 6rpx;
+}
+
+.detailZoneEmoji {
+  font-size: $font-size-sm;
+}
+
+.detailZoneName {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.detailMood {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: $radius-round;
+  @include flex-center;
+}
+
+.detailMoodEmoji {
+  font-size: $font-size-sm;
+}
+
+.detailContent {
+  font-size: $font-size-md;
+  line-height: $line-height-loose;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+  word-break: break-all;
+}
+
+.detailVotes {
+  margin-bottom: $spacing-md;
+}
+
+.voteItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-sm;
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.voteText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.voteCount {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.voteBar {
+  height: 8rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  margin-top: 8rpx;
+  overflow: hidden;
+}
+
+.voteBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary, $color-primary-light);
+  border-radius: $radius-round;
+}
+
+.detailMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.metaTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.metaStats {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.metaStat {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.countdownTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  background: #FFF3E0;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-md;
+}
+
+.countdownText {
+  font-size: $font-size-xs;
+  color: #E17055;
+}
+
+.responseSection {
+  padding: 0 $spacing-lg;
+}
+
+.responseTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.responseCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+  margin-left: $spacing-sm;
+}
+
+.respondBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $spacing-lg;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.respondActions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.respondBtn {
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  @include flex-center;
+  transition: all $transition-base;
+  gap: 6rpx;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.97);
+  }
+}
+
+.respondBtnEmoji {
+  font-size: $font-size-md;
+}
+
+.respondBtnText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.respondHug {
+  background: #FFF0F0;
+  border: 1rpx solid #FFD5D5;
+}
+
+.respondHugText {
+  color: #FF6B6B;
+}
+
+.respondEmpathy {
+  background: #FFFDE7;
+  border: 1rpx solid #FFF59D;
+}
+
+.respondEmpathyText {
+  color: #FDCB6E;
+}
+
+.respondAdvice {
+  background: #E3F2FD;
+  border: 1rpx solid #BBDEFB;
+}
+
+.respondAdviceText {
+  color: #74B9FF;
+}
+
+.respondPrivate {
+  background: #F3E5F5;
+  border: 1rpx solid #E1BEE7;
+}
+
+.respondPrivateText {
+  color: #A29BFE;
+}
+
+.emptyResponses {
+  @include flex-center;
+  flex-direction: column;
+  padding: 80rpx 0;
+  gap: $spacing-sm;
+}
+
+.emptyEmoji {
+  font-size: 64rpx;
+}
+
+.emptyText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}

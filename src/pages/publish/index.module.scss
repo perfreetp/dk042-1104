@@ -1,0 +1,223 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-lg;
+  padding-bottom: 200rpx;
+}
+
+.sectionLabel {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.zoneSection {
+  margin-bottom: $spacing-lg;
+}
+
+.zoneList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.moodSection {
+  margin-bottom: $spacing-lg;
+}
+
+.moodList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.contentSection {
+  margin-bottom: $spacing-lg;
+}
+
+.textArea {
+  width: 100%;
+  min-height: 280rpx;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  font-size: $font-size-md;
+  line-height: $line-height-loose;
+  color: $color-text-primary;
+  border: 2rpx solid $color-border;
+  box-shadow: $shadow-card;
+}
+
+.textAreaFocused {
+  border-color: $color-primary;
+}
+
+.charCount {
+  text-align: right;
+  margin-top: $spacing-xs;
+}
+
+.charCountText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.optionsSection {
+  margin-bottom: $spacing-lg;
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  box-shadow: $shadow-card;
+}
+
+.optionLeft {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.optionEmoji {
+  font-size: 32rpx;
+}
+
+.optionLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.optionDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.voteSection {
+  margin-bottom: $spacing-lg;
+}
+
+.voteInput {
+  display: flex;
+  align-items: center;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: 0 $spacing-md;
+  border: 2rpx solid $color-border;
+  margin-bottom: $spacing-sm;
+}
+
+.voteIndex {
+  font-size: $font-size-md;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  margin-right: $spacing-sm;
+}
+
+.voteField {
+  flex: 1;
+  height: $button-height-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  background: transparent;
+  border: none;
+}
+
+.addVoteBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 24rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+  border: 1rpx dashed $color-primary;
+}
+
+.addVoteText {
+  font-size: $font-size-sm;
+  color: $color-primary;
+}
+
+.submitBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: $spacing-md $spacing-lg;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+}
+
+.draftBtn {
+  flex: 1;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  background: $color-bg-page;
+  border: 1rpx solid $color-border;
+  @include flex-center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.draftBtnText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.publishBtn {
+  flex: 2;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  @include flex-center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.publishBtnText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.imageHint {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  border: 2rpx dashed $color-border;
+  margin-bottom: $spacing-lg;
+}
+
+.imageHintEmoji {
+  font-size: 36rpx;
+}
+
+.imageHintText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}

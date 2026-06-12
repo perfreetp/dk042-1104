@@ -1,0 +1,51 @@
+@use '@/styles/variables.scss' as *;
+
+.item {
+  display: flex;
+  padding: $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-sm;
+  gap: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.typeBadge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 16rpx;
+  border-radius: $radius-md;
+  min-width: 80rpx;
+  gap: 4rpx;
+}
+
+.typeEmoji {
+  font-size: 32rpx;
+}
+
+.typeLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.contentWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.content {
+  font-size: $font-size-md;
+  line-height: $line-height-loose;
+  color: $color-text-primary;
+  word-break: break-all;
+}
+
+.time {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

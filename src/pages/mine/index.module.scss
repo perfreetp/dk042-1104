@@ -1,0 +1,223 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F3E5F5 0%, $color-bg-page 30%);
+  padding-bottom: 120rpx;
+}
+
+.profileHeader {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: $spacing-xl $spacing-lg;
+  border-radius: 0 0 $radius-xl $radius-xl;
+  margin-bottom: $spacing-lg;
+}
+
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: $radius-round;
+  background: rgba(255, 255, 255, 0.3);
+  @include flex-center;
+  border: 4rpx solid rgba(255, 255, 255, 0.5);
+}
+
+.avatarEmoji {
+  font-size: 44rpx;
+}
+
+.nickname {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.circleTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-round;
+  margin-top: 8rpx;
+}
+
+.circleText {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-around;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.statValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section {
+  padding: 0 $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.kindnessCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.kindnessIcon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: #FFF0F0;
+  @include flex-center;
+}
+
+.kindnessEmoji {
+  font-size: 40rpx;
+}
+
+.kindnessInfo {
+  flex: 1;
+}
+
+.kindnessLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: 4rpx;
+}
+
+.kindnessValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-warm;
+}
+
+.streakCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.streakIcon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: #FFF8E1;
+  @include flex-center;
+}
+
+.streakEmoji {
+  font-size: 40rpx;
+}
+
+.streakInfo {
+  flex: 1;
+}
+
+.streakLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: 4rpx;
+}
+
+.streakValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: #FDCB6E;
+}
+
+.menuList {
+  padding: 0 $spacing-lg;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.menuLeft {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.menuEmoji {
+  font-size: 36rpx;
+}
+
+.menuLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.menuArrow {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.menuBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-round;
+  background: $color-error;
+  min-width: 32rpx;
+  @include flex-center;
+}
+
+.menuBadgeText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}

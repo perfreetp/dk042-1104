@@ -1,0 +1,32 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  border-radius: $radius-round;
+  border: 1rpx solid $color-border;
+  background: $color-bg-card;
+  gap: 8rpx;
+  white-space: nowrap;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.97);
+  }
+}
+
+.tagActive {
+  border-width: 2rpx;
+  box-shadow: $shadow-card;
+}
+
+.emoji {
+  font-size: $font-size-sm;
+}
+
+.name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}

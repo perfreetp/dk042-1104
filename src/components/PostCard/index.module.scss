@@ -1,0 +1,156 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  position: relative;
+  overflow: hidden;
+  border-left: 6rpx solid $color-primary;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.95;
+    transform: scale(0.99);
+  }
+}
+
+.cardCompact {
+  padding: $spacing-md;
+}
+
+.pinnedBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: 4rpx 20rpx;
+  border-radius: 0 0 0 $radius-md;
+}
+
+.pinnedText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.zoneTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  border: 1rpx solid;
+  gap: 6rpx;
+}
+
+.zoneEmoji {
+  font-size: $font-size-sm;
+}
+
+.zoneName {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.moodDot {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: $radius-round;
+  @include flex-center;
+}
+
+.moodEmoji {
+  font-size: $font-size-sm;
+}
+
+.cardBody {
+  margin-bottom: $spacing-md;
+}
+
+.content {
+  font-size: $font-size-md;
+  line-height: $line-height-loose;
+  color: $color-text-primary;
+  word-break: break-all;
+}
+
+.voteSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.voteItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+  border: 1rpx solid $color-border;
+  gap: 8rpx;
+}
+
+.voteText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.voteCount {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.countdownBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  background: #FFF3E0;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-md;
+}
+
+.countdownText {
+  font-size: $font-size-xs;
+  color: #E17055;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.statItem {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.driftTag {
+  font-size: $font-size-xs;
+  color: $color-primary-light;
+  background: #F0EEFF;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-round;
+}

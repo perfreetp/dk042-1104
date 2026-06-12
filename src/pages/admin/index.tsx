@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
-import { mockReports } from '@/data/responses';
 import { formatTime } from '@/utils';
 import { useAppStore } from '@/store/useAppStore';
 import type { ReportItem } from '@/types';
@@ -10,25 +9,27 @@ import styles from './index.module.scss';
 
 const AdminPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('reports');
-  const [reports, setReports] = useState<ReportItem[]>(mockReports);
-  const { banPost, pinPost } = useAppStore();
+  const { reports, resolveReport, pinPost } = useAppStore();
 
-  const pendingReports = reports.filter((r) => r.status === 'pending');
-  const resolvedReports = reports.filter((r) => r.status !== 'pending');
+  const pendingReports = useMemo(
+    () => reports.filter((r) => r.status === 'pending'),
+    [reports]
+  );
 
   const handleBan = (report: ReportItem) => {
-    setReports((prev) =>
-      prev.map((r) => (r.id === report.id ? { ...r, status: 'resolved' as const } : r))
-    );
-    banPost(report.postId);
+    resolveReport(report.id, 'ban');
     Taro.showToast({ title: '已禁言处理', icon: 'success' });
   };
 
   const handleDismiss = (report: ReportItem) => {
-    setReports((prev) =>
-      prev.map((r) => (r.id === report.id ? { ...r, status: 'dismissed' as const } : r))
-    );
+    resolveReport(report.id, 'dismiss');
     Taro.showToast({ title: '已驳回举报', icon: 'none' });
+  };
+
+  const handlePin = (report: ReportItem) => {
+    pinPost(report.postId);
+    resolveReport(report.id, 'dismiss');
+    Taro.showToast({ title: '已置顶', icon: 'success' });
   };
 
   const handlePinRules = () => {
@@ -94,7 +95,7 @@ const AdminPage: React.FC = () => {
                     <Text className={styles.actionButtonEmoji}>✓</Text>
                     <Text className={`${styles.actionButtonText} ${styles.dismissBtnText}`}>驳回</Text>
                   </View>
-                  <View className={`${styles.actionButton} ${styles.pinBtn}`} onClick={() => pinPost(report.postId)}>
+                  <View className={`${styles.actionButton} ${styles.pinBtn}`} onClick={() => handlePin(report)}>
                     <Text className={styles.actionButtonEmoji}>📌</Text>
                     <Text className={`${styles.actionButtonText} ${styles.pinBtnText}`}>置顶</Text>
                   </View>

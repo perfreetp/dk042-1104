@@ -19,6 +19,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p002',
@@ -41,6 +42,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p003',
@@ -60,6 +62,7 @@ export const mockPosts: Post[] = [
     countdownEnd: '2026-06-14T19:45:00Z',
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p004',
@@ -82,6 +85,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p005',
@@ -101,6 +105,15 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [
+      {
+        id: 'img_001',
+        url: 'https://picsum.photos/id/1018/750/500',
+        doodles: [],
+        width: 750,
+        height: 500,
+      },
+    ],
   },
   {
     id: 'p006',
@@ -123,6 +136,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p007',
@@ -142,6 +156,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p008',
@@ -161,6 +176,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p009',
@@ -180,6 +196,7 @@ export const mockPosts: Post[] = [
     countdownEnd: '2026-06-15T23:50:00Z',
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p010',
@@ -202,6 +219,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p011',
@@ -221,6 +239,7 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
   {
     id: 'p012',
@@ -240,5 +259,6 @@ export const mockPosts: Post[] = [
     countdownEnd: null,
     isReported: false,
     isBanned: false,
+    images: [],
   },
 ];

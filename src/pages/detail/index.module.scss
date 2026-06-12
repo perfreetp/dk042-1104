@@ -57,6 +57,38 @@
   word-break: break-all;
 }
 
+.detailImages {
+  margin-bottom: $spacing-lg;
+}
+
+.detailImageWrap {
+  position: relative;
+  width: 100%;
+  border-radius: $radius-md;
+  overflow: hidden;
+  margin-bottom: $spacing-sm;
+}
+
+.detailImage {
+  display: block;
+  width: 100%;
+  border-radius: $radius-md;
+}
+
+.doodleOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.doodleSvg {
+  width: 100%;
+  height: 100%;
+}
+
 .detailVotes {
   margin-bottom: $spacing-md;
 }
@@ -100,6 +132,20 @@
   height: 100%;
   background: linear-gradient(90deg, $color-primary, $color-primary-light);
   border-radius: $radius-round;
+}
+
+.voteItemVoted {
+  background: #F0EEFF;
+  border-color: $color-primary;
+}
+
+.voteTextVoted {
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.voteBarFillVoted {
+  background: linear-gradient(90deg, $color-primary, $color-primary-light) !important;
 }
 
 .detailMeta {

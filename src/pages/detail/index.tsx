@@ -1,28 +1,54 @@
 import React, { useMemo } from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { mockPosts } from '@/data/posts';
-import { mockResponses } from '@/data/responses';
 import { zones, moods } from '@/data/zones';
 import { formatTime, getMoodColor, getZoneColor } from '@/utils';
 import { useAppStore } from '@/store/useAppStore';
 import ResponseItem from '@/components/ResponseItem';
-import type { Post, VoteOption } from '@/types';
+import type { Post, VoteOption, DoodlePath } from '@/types';
 import styles from './index.module.scss';
+
+const renderDoodlePath = (doodle: DoodlePath, imgWidth: number, imgHeight: number) => {
+  if (doodle.points.length < 2) return null;
+  const pathData = doodle.points
+    .map((p, i) => {
+      const x = (p.x / imgWidth) * 100;
+      const y = (p.y / imgHeight) * 100;
+      return `${i === 0 ? 'M' : 'L'} ${x}% ${y}%`;
+    })
+    .join(' ');
+
+  return (
+    <path
+      key={doodle.id}
+      d={pathData}
+      stroke={doodle.color}
+      strokeWidth={(doodle.size / Math.max(imgWidth, imgHeight)) * 100}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  );
+};
 
 const DetailPage: React.FC = () => {
   const params = Taro.getCurrentInstance().router?.params;
   const postId = params?.id || 'p001';
-  const { addKindness } = useAppStore();
+  const { posts, vote, hasVoted, getResponsesForPost, addKindness, addResponse } = useAppStore();
 
   const post: Post | undefined = useMemo(
-    () => mockPosts.find((p) => p.id === postId),
-    [postId]
+    () => posts.find((p) => p.id === postId),
+    [posts, postId]
   );
 
   const responses = useMemo(
-    () => mockResponses.filter((r) => r.postId === postId),
-    [postId]
+    () => getResponsesForPost(postId),
+    [getResponsesForPost, postId]
+  );
+
+  const votedOptionId = useMemo(
+    () => hasVoted(postId),
+    [hasVoted, postId]
   );
 
   if (!post) {
@@ -36,6 +62,17 @@ const DetailPage: React.FC = () => {
     );
   }
 
+  if (post.isBanned) {
+    return (
+      <View className={styles.container}>
+        <View className={styles.emptyResponses}>
+          <Text className={styles.emptyEmoji}>🚫</Text>
+          <Text className={styles.emptyText}>该内容已被管理员屏蔽</Text>
+        </View>
+      </View>
+    );
+  }
+
   const zone = zones.find((z) => z.id === post.zoneId);
   const mood = moods.find((m) => m.id === post.moodId);
   const moodColor = getMoodColor(post.moodId);
@@ -43,8 +80,17 @@ const DetailPage: React.FC = () => {
 
   const totalVotes = post.votes.reduce((sum, v) => sum + v.count, 0);
 
-  const handleVote = (vote: VoteOption) => {
-    Taro.showToast({ title: '投票成功', icon: 'success' });
+  const handleVote = (voteOption: VoteOption) => {
+    if (votedOptionId) {
+      Taro.showToast({ title: '你已经投过票了', icon: 'none' });
+      return;
+    }
+    const success = vote(postId, voteOption.id);
+    if (success) {
+      Taro.showToast({ title: '投票成功', icon: 'success' });
+    } else {
+      Taro.showToast({ title: '投票失败', icon: 'none' });
+    }
   };
 
   const handleRespond = (type: string) => {
@@ -55,6 +101,7 @@ const DetailPage: React.FC = () => {
       private: '申请私密回复 🔒',
     };
     addKindness(2);
+    addResponse(postId, type as any, typeLabels[type] || '回应');
     Taro.showToast({ title: typeLabels[type] || '回应成功', icon: 'none' });
   };
 
@@ -76,6 +123,32 @@ const DetailPage: React.FC = () => {
 
         <Text className={styles.detailContent}>{post.content}</Text>
 
+        {post.images && post.images.length > 0 && (
+          <View className={styles.detailImages}>
+            {post.images.map((img) => (
+              <View key={img.id} className={styles.detailImageWrap}>
+                <Image
+                  className={styles.detailImage}
+                  src={img.url}
+                  mode="widthFix"
+                  style={{ width: '100%' }}
+                />
+                {img.doodles && img.doodles.length > 0 && (
+                  <View className={styles.doodleOverlay}>
+                    <svg
+                      className={styles.doodleSvg}
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                    >
+                      {img.doodles.map((d) => renderDoodlePath(d, img.width, img.height))}
+                    </svg>
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
+
         {post.countdownEnd && (
           <View className={styles.countdownTag}>
             <Text className={styles.countdownText}>⏳ 定时删除中</Text>
@@ -84,17 +157,28 @@ const DetailPage: React.FC = () => {
 
         {post.votes.length > 0 && (
           <View className={styles.detailVotes}>
-            {post.votes.map((vote) => {
-              const percent = totalVotes > 0 ? (vote.count / totalVotes) * 100 : 0;
+            {post.votes.map((voteOption) => {
+              const percent = totalVotes > 0 ? (voteOption.count / totalVotes) * 100 : 0;
+              const isVoted = votedOptionId === voteOption.id;
               return (
-                <View key={vote.id} className={styles.voteItem} onClick={() => handleVote(vote)}>
+                <View
+                  key={voteOption.id}
+                  className={`${styles.voteItem} ${isVoted ? styles.voteItemVoted : ''}`}
+                  onClick={() => handleVote(voteOption)}
+                >
                   <View style={{ flex: 1 }}>
-                    <Text className={styles.voteText}>{vote.text}</Text>
+                    <Text className={`${styles.voteText} ${isVoted ? styles.voteTextVoted : ''}`}>
+                      {isVoted && '✓ '}
+                      {voteOption.text}
+                    </Text>
                     <View className={styles.voteBar}>
-                      <View className={styles.voteBarFill} style={{ width: `${percent}%` }} />
+                      <View
+                        className={`${styles.voteBarFill} ${isVoted ? styles.voteBarFillVoted : ''}`}
+                        style={{ width: `${percent}%` }}
+                      />
                     </View>
                   </View>
-                  <Text className={styles.voteCount}>{vote.count}票</Text>
+                  <Text className={styles.voteCount}>{voteOption.count}票</Text>
                 </View>
               );
             })}
@@ -105,7 +189,7 @@ const DetailPage: React.FC = () => {
           <Text className={styles.metaTime}>{formatTime(post.createdAt)}</Text>
           <View className={styles.metaStats}>
             <Text className={styles.metaStat}>🤗 {post.kindnessReceived}</Text>
-            <Text className={styles.metaStat}>💬 {post.responseCount}</Text>
+            <Text className={styles.metaStat}>💬 {responses.length}</Text>
           </View>
         </View>
       </View>

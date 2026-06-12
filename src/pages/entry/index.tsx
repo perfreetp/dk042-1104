@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Input } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useAppStore } from '@/store/useAppStore';
@@ -8,13 +8,18 @@ import styles from './index.module.scss';
 const EntryPage: React.FC = () => {
   const [code, setCode] = useState('');
   const [focused, setFocused] = useState(false);
-  const { setVerified, setCircleCode } = useAppStore();
+  const { setVerified, setGuestMode, isVerified, isGuest } = useAppStore();
+
+  useEffect(() => {
+    if (isVerified && !isGuest) {
+      Taro.switchTab({ url: '/pages/home/index' });
+    }
+  }, [isVerified, isGuest]);
 
   const handleSubmit = () => {
     const upperCode = code.toUpperCase().trim();
     if (circleCodes[upperCode]) {
-      setVerified(true);
-      setCircleCode(circleCodes[upperCode]);
+      setVerified(true, upperCode, circleCodes[upperCode]);
       Taro.showToast({ title: `欢迎进入${circleCodes[upperCode]}`, icon: 'success' });
       setTimeout(() => {
         Taro.switchTab({ url: '/pages/home/index' });
@@ -25,8 +30,11 @@ const EntryPage: React.FC = () => {
   };
 
   const handleSkip = () => {
-    setVerified(true);
-    Taro.switchTab({ url: '/pages/home/index' });
+    setGuestMode();
+    Taro.showToast({ title: '以游客身份浏览', icon: 'none' });
+    setTimeout(() => {
+      Taro.switchTab({ url: '/pages/home/index' });
+    }, 800);
   };
 
   return (
@@ -56,7 +64,7 @@ const EntryPage: React.FC = () => {
       </View>
 
       <View className={styles.circlesSection}>
-        <Text className={styles.circlesTitle}>可加入的圈子</Text>
+        <Text className={styles.circlesTitle}>可加入的圈子 (点击试用邀请码)</Text>
         <View className={styles.circlesList}>
           {Object.entries(circleCodes).map(([key, name]) => (
             <View key={key} className={styles.circleItem} onClick={() => setCode(key)}>
@@ -68,7 +76,7 @@ const EntryPage: React.FC = () => {
       </View>
 
       <View className={styles.skipBtn} onClick={handleSkip}>
-        <Text className={styles.skipText}>跳过，直接浏览 ›</Text>
+        <Text className={styles.skipText}>跳过，仅浏览 (不可发布) ›</Text>
       </View>
     </View>
   );

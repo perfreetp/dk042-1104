@@ -83,6 +83,37 @@
   word-break: break-all;
 }
 
+.imageSection {
+  margin-bottom: $spacing-md;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  border-radius: $radius-md;
+}
+
+.doodleOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.doodleSvg {
+  width: 100%;
+  height: 100%;
+}
+
 .voteSection {
   display: flex;
   flex-wrap: wrap;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import classnames from 'classnames';
-import type { Post } from '@/types';
+import type { Post, DoodlePath } from '@/types';
 import { formatTime, getMoodColor, getZoneColor } from '@/utils';
 import { zones, moods } from '@/data/zones';
 import styles from './index.module.scss';
@@ -12,6 +12,29 @@ interface PostCardProps {
   hideHeat?: boolean;
   compact?: boolean;
 }
+
+const renderDoodlePath = (doodle: DoodlePath, imgWidth: number, imgHeight: number) => {
+  if (doodle.points.length < 2) return null;
+  const pathData = doodle.points
+    .map((p, i) => {
+      const x = (p.x / imgWidth) * 100;
+      const y = (p.y / imgHeight) * 100;
+      return `${i === 0 ? 'M' : 'L'} ${x}% ${y}%`;
+    })
+    .join(' ');
+
+  return (
+    <path
+      key={doodle.id}
+      d={pathData}
+      stroke={doodle.color}
+      strokeWidth={(doodle.size / Math.max(imgWidth, imgHeight)) * 100}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  );
+};
 
 const PostCard: React.FC<PostCardProps> = ({ post, onClick, hideHeat = false, compact = false }) => {
   const zone = zones.find((z) => z.id === post.zoneId);
@@ -50,6 +73,32 @@ const PostCard: React.FC<PostCardProps> = ({ post, onClick, hideHeat = false, co
           {post.content}
         </Text>
       </View>
+
+      {post.images && post.images.length > 0 && (
+        <View className={styles.imageSection}>
+          {post.images.map((img) => (
+            <View key={img.id} className={styles.imageWrap}>
+              <Image
+                className={styles.image}
+                src={img.url}
+                mode="aspectFill"
+                style={{ width: '100%', height: '400rpx' }}
+              />
+              {img.doodles && img.doodles.length > 0 && (
+                <View className={styles.doodleOverlay}>
+                  <svg
+                    className={styles.doodleSvg}
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                  >
+                    {img.doodles.map((d) => renderDoodlePath(d, img.width, img.height))}
+                  </svg>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      )}
 
       {post.votes.length > 0 && (
         <View className={styles.voteSection}>

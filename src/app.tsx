@@ -1,16 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDidShow, useDidHide } from '@tarojs/taro';
-// 全局样式
+import Taro from '@tarojs/taro';
+import { useAppStore } from '@/store/useAppStore';
 import './app.scss';
 
 function App(props) {
-  // 可以使用所有的 React Hooks
-  useEffect(() => {});
+  const { isVerified, isGuest } = useAppStore();
 
-  // 对应 onShow
+  useEffect(() => {
+    if (!isVerified && !isGuest) {
+      console.log('[App] 未验证，跳转到入口页');
+      Taro.navigateTo({ url: '/pages/entry/index' });
+    } else {
+      console.log('[App] 已验证/游客模式', { isVerified, isGuest });
+    }
+  }, [isVerified, isGuest]);
+
   useDidShow(() => {});
-
-  // 对应 onHide
   useDidHide(() => {});
 
   return props.children;

@@ -19,6 +19,26 @@ export interface VoteOption {
   count: number;
 }
 
+export interface DoodlePoint {
+  x: number;
+  y: number;
+}
+
+export interface DoodlePath {
+  id: string;
+  points: DoodlePoint[];
+  color: string;
+  size: number;
+}
+
+export interface PostImage {
+  id: string;
+  url: string;
+  doodles: DoodlePath[];
+  width: number;
+  height: number;
+}
+
 export interface Post {
   id: string;
   zoneId: string;
@@ -37,6 +57,7 @@ export interface Post {
   countdownEnd: string | null;
   isReported: boolean;
   isBanned: boolean;
+  images: PostImage[];
 }
 
 export type ResponseType = 'hug' | 'empathy' | 'suggestion' | 'private_request';
@@ -54,11 +75,13 @@ export interface UserProfile {
   id: string;
   nickname: string;
   circleCode: string;
+  circleName: string;
   kindness: number;
   streakDays: number;
   blockedUsers: string[];
   isAdmin: boolean;
   isVerified: boolean;
+  isGuest: boolean;
   totalPosts: number;
   totalResponses: number;
 }
@@ -71,4 +94,10 @@ export interface ReportItem {
   reason: string;
   createdAt: string;
   status: 'pending' | 'resolved' | 'dismissed';
+}
+
+export interface VoteRecord {
+  postId: string;
+  optionId: string;
+  votedAt: string;
 }

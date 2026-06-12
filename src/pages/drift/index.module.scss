@@ -89,6 +89,20 @@
   word-break: break-all;
 }
 
+.imageHint {
+  margin-bottom: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background: #F0EEFF;
+  border-radius: $radius-sm;
+  display: inline-flex;
+  align-items: center;
+}
+
+.imageHintText {
+  font-size: $font-size-xs;
+  color: $color-primary;
+}
+
 .cardMeta {
   display: flex;
   align-items: center;

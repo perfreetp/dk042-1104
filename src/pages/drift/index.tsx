@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { mockPosts } from '@/data/posts';
 import { moods } from '@/data/zones';
 import { zones } from '@/data/zones';
 import { formatTime, getMoodColor } from '@/utils';
@@ -10,10 +9,14 @@ import type { Post } from '@/types';
 import styles from './index.module.scss';
 
 const DriftPage: React.FC = () => {
-  const driftPosts = mockPosts.filter((p) => p.isDrift && !p.isBanned);
+  const { posts, addKindness } = useAppStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewed, setViewed] = useState<Set<string>>(new Set());
-  const { addKindness } = useAppStore();
+
+  const driftPosts = useMemo(
+    () => posts.filter((p) => p.isDrift && !p.isBanned),
+    [posts]
+  );
 
   const currentPost: Post | undefined = driftPosts[currentIndex];
 
@@ -65,6 +68,11 @@ const DriftPage: React.FC = () => {
                 <Text className={styles.cardMoodEmoji}>{currentMood?.emoji}</Text>
               </View>
               <Text className={styles.cardContent}>{currentPost.content}</Text>
+              {currentPost.images && currentPost.images.length > 0 && (
+                <View className={styles.imageHint}>
+                  <Text className={styles.imageHintText}>📷 含图片 · 点击查看</Text>
+                </View>
+              )}
               <View className={styles.cardMeta}>
                 <Text className={styles.cardZone}>{currentZone?.emoji} {currentZone?.name}</Text>
                 <Text className={styles.cardTime}>{formatTime(currentPost.createdAt)}</Text>

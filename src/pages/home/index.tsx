@@ -3,7 +3,6 @@ import { View, Text, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import { useAppStore } from '@/store/useAppStore';
-import { mockPosts } from '@/data/posts';
 import { zones } from '@/data/zones';
 import PostCard from '@/components/PostCard';
 import ZoneTag from '@/components/ZoneTag';
@@ -11,25 +10,27 @@ import type { Post, Zone } from '@/types';
 import styles from './index.module.scss';
 
 const HomePage: React.FC = () => {
-  const [currentZone, setCurrentZone] = useState<string>('all');
-  const { isVerified } = useAppStore();
+  const { posts, canPublish, currentZoneId, setCurrentZone } = useAppStore();
+  const [currentZone, setCurrentZoneLocal] = useState<string>(currentZoneId || 'all');
 
   const filteredPosts = useMemo(() => {
-    let posts = mockPosts.filter((p) => !p.isBanned);
+    let result = posts.filter((p) => !p.isBanned);
     if (currentZone !== 'all') {
-      posts = posts.filter((p) => p.zoneId === currentZone);
+      result = result.filter((p) => p.zoneId === currentZone);
     }
-    const pinned = posts.filter((p) => p.isPinned);
-    const normal = posts.filter((p) => !p.isPinned);
+    const pinned = result.filter((p) => p.isPinned);
+    const normal = result.filter((p) => !p.isPinned);
     return [...pinned, ...normal];
-  }, [currentZone]);
+  }, [posts, currentZone]);
 
   const handleZoneClick = (zone: Zone) => {
     setCurrentZone(zone.id);
+    setCurrentZoneLocal(zone.id);
   };
 
   const handleAllClick = () => {
     setCurrentZone('all');
+    setCurrentZoneLocal('all');
   };
 
   const handlePostClick = (post: Post) => {
@@ -37,6 +38,21 @@ const HomePage: React.FC = () => {
   };
 
   const handlePublish = () => {
+    if (!canPublish()) {
+      Taro.showModal({
+        title: '游客无法发布',
+        content: '请输入邀请码进入圈子后再发布内容',
+        showCancel: true,
+        cancelText: '继续浏览',
+        confirmText: '去验证',
+        success: (res) => {
+          if (res.confirm) {
+            Taro.navigateTo({ url: '/pages/entry/index' });
+          }
+        },
+      });
+      return;
+    }
     Taro.navigateTo({ url: '/pages/publish/index' });
   };
 
@@ -54,7 +70,7 @@ const HomePage: React.FC = () => {
             <Text className={styles.statBadgeText}>128 人在线</Text>
           </View>
           <View className={styles.statBadge}>
-            <Text className={styles.statBadgeText}>💬 {mockPosts.length} 条倾诉</Text>
+            <Text className={styles.statBadgeText}>💬 {posts.filter(p => !p.isBanned).length} 条倾诉</Text>
           </View>
         </View>
       </View>

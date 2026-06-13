@@ -40,16 +40,16 @@ const renderDoodlePath = (doodle: DoodlePath, imgWidth: number, imgHeight: numbe
 const DetailPage: React.FC = () => {
   const params = Taro.getCurrentInstance().router?.params;
   const postId = params?.id || 'p001';
-  const { posts, vote, voteRecords, getResponsesForPost, addKindness, addResponse } = useAppStore();
+  const { posts, vote, voteRecords, responses, addKindness, addResponse } = useAppStore();
 
   const post: Post | undefined = useMemo(
     () => posts.find((p) => p.id === postId),
     [posts, postId]
   );
 
-  const responses = useMemo(
-    () => getResponsesForPost(postId),
-    [getResponsesForPost, postId]
+  const postResponses = useMemo(
+    () => responses.filter(r => r.postId === postId),
+    [responses, postId]
   );
 
   const votedOptionId = useMemo(() => {
@@ -196,18 +196,18 @@ const DetailPage: React.FC = () => {
           <Text className={styles.metaTime}>{formatTime(post.createdAt)}</Text>
           <View className={styles.metaStats}>
             <Text className={styles.metaStat}>🤗 {post.kindnessReceived}</Text>
-            <Text className={styles.metaStat}>💬 {responses.length}</Text>
+            <Text className={styles.metaStat}>💬 {postResponses.length}</Text>
           </View>
         </View>
       </View>
 
       <View className={styles.responseSection}>
         <Text className={styles.responseTitle}>
-          回应 <Text className={styles.responseCount}>{responses.length}</Text>
+          回应 <Text className={styles.responseCount}>{postResponses.length}</Text>
         </Text>
 
-        {responses.length > 0 ? (
-          responses.map((r) => <ResponseItem key={r.id} response={r} />)
+        {postResponses.length > 0 ? (
+          postResponses.map((r) => <ResponseItem key={r.id} response={r} />)
         ) : (
           <View className={styles.emptyResponses}>
             <Text className={styles.emptyEmoji}>🤗</Text>

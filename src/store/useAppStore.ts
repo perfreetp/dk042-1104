@@ -37,7 +37,9 @@ interface AppState {
   hasVoted: (postId: string) => string | null;
   getVotedOption: (postId: string) => string | null;
   addResponse: (postId: string, type: PostResponse['type'], content: string) => { success: boolean; reason?: string };
+  revokeResponse: (responseId: string) => boolean;
   getResponsesForPost: (postId: string) => PostResponse[];
+  getResponsesForUser: (userId: string) => PostResponse[];
   canRespond: (postId: string, type: PostResponse['type']) => { allowed: boolean; remainingMs?: number };
   canPublish: () => boolean;
   resetAllState: () => void;
@@ -308,6 +310,35 @@ export const useAppStore = create<AppState>()(
 
       getResponsesForPost: (postId) => {
         return get().responses.filter((r) => r.postId === postId);
+      },
+
+      getResponsesForUser: (userId) => {
+        const state = get();
+        const myPostIds = state.posts.filter(p => p.authorId === userId).map(p => p.id);
+        return state.responses.filter(r => myPostIds.includes(r.postId));
+      },
+
+      revokeResponse: (responseId) => {
+        const state = get();
+        const response = state.responses.find(r => r.id === responseId);
+        if (!response || response.responderId !== state.user.id) {
+          return false;
+        }
+
+        set((state) => ({
+          responses: state.responses.filter(r => r.id !== responseId),
+          myResponses: state.myResponses.filter(r => r.id !== responseId),
+          posts: state.posts.map(p =>
+            p.id === response.postId
+              ? { ...p, responseCount: Math.max(0, p.responseCount - 1) }
+              : p
+          ),
+          user: {
+            ...state.user,
+            totalResponses: Math.max(0, state.user.totalResponses - 1),
+          },
+        }));
+        return true;
       },
 
       canPublish: () => {

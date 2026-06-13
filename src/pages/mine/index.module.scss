@@ -227,6 +227,61 @@
   margin-bottom: $spacing-sm;
 }
 
+.filterWrap {
+  padding: $spacing-sm 0 $spacing-md;
+}
+
+.filterGroup {
+  margin-bottom: $spacing-sm;
+}
+
+.filterLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.filterChips {
+  display: flex;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-round;
+  gap: 6rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.filterChipActive {
+  background: #F0EEFF;
+  border-color: $color-primary;
+}
+
+.filterChipEmoji {
+  font-size: $font-size-xs;
+}
+
+.filterChipText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.filterChipActive .filterChipText {
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
 .responseRecord {
   display: flex;
   align-items: center;
@@ -240,6 +295,11 @@
   &:active {
     background: $color-bg-hover;
   }
+}
+
+.responseRecordBanned {
+  border-left-color: #E0E0E0;
+  opacity: 0.75;
 }
 
 .responseRecordLeft {
@@ -274,10 +334,15 @@
   margin-bottom: 4rpx;
 }
 
+.responseRecordTextDim {
+  color: $color-text-tertiary;
+}
+
 .responseRecordMeta {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+  flex-wrap: wrap;
 }
 
 .responseRecordZone {
@@ -288,6 +353,38 @@
 .responseRecordTime {
   font-size: $font-size-xs;
   color: $color-text-tertiary;
+}
+
+.responseRecordBannedTag {
+  font-size: $font-size-xs;
+  color: $color-error;
+  background: #FFF0F0;
+  padding: 2rpx 10rpx;
+  border-radius: $radius-round;
+}
+
+.responseRecordActions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  flex-shrink: 0;
+}
+
+.revokeBtn {
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  background: #FFF0F0;
+  border: 2rpx solid #FFCCCB;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.revokeBtnText {
+  font-size: $font-size-xs;
+  color: $color-error;
+  font-weight: $font-weight-medium;
 }
 
 .responseRecordArrow {

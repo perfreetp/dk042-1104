@@ -6,6 +6,7 @@ export default defineAppConfig({
     'pages/entry/index',
     'pages/publish/index',
     'pages/publishResult/index',
+    'pages/receivedResponses/index',
     'pages/detail/index',
     'pages/admin/index',
   ],

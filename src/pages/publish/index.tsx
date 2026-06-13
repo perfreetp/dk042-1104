@@ -230,7 +230,14 @@ const PublishPage: React.FC = () => {
           {
             id: generateId(),
             url: selectedImage.url,
-            doodles: doodles,
+            doodles: doodles.map(d => ({
+              ...d,
+              points: d.points.map(p => ({
+                x: (p.x / CANVAS_WIDTH) * selectedImage.width,
+                y: (p.y / CANVAS_HEIGHT) * selectedImage.height,
+              })),
+              size: (d.size / CANVAS_WIDTH) * selectedImage.width,
+            })),
             width: selectedImage.width,
             height: selectedImage.height,
           },
@@ -266,10 +273,7 @@ const PublishPage: React.FC = () => {
     addKindness(1);
     incrementStreak();
 
-    Taro.showToast({ title: '倾诉成功 🌙', icon: 'success' });
-    setTimeout(() => {
-      Taro.navigateBack();
-    }, 1500);
+    Taro.redirectTo({ url: `/pages/publishResult/index?postId=${newPost.id}` });
   };
 
   const handleSaveDraft = () => {

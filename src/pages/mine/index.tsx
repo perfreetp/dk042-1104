@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useAppStore } from '@/store/useAppStore';
-import { mockReports } from '@/data/responses';
+import { formatTime } from '@/utils';
+import { zones } from '@/data/zones';
 import styles from './index.module.scss';
 
+const typeEmoji: Record<string, string> = {
+  hug: '🤗',
+  empathy: '💛',
+  suggestion: '💡',
+  private: '🔒',
+};
+
 const MinePage: React.FC = () => {
-  const { user } = useAppStore();
-  const pendingReports = mockReports.filter((r) => r.status === 'pending').length;
+  const { user, myResponses, posts, reports } = useAppStore();
+  const [showResponses, setShowResponses] = useState(false);
+  const pendingReports = useMemo(
+    () => reports.filter((r) => r.status === 'pending').length,
+    [reports]
+  );
+
+  const myResponsesWithPosts = useMemo(() => {
+    return myResponses.map((resp) => {
+      const post = posts.find((p) => p.id === resp.postId);
+      const zone = zones.find((z) => z.id === post?.zoneId);
+      return { response: resp, post, zone };
+    });
+  }, [myResponses, posts]);
 
   const handleMyPosts = () => {
-    Taro.navigateTo({ url: '/pages/detail/index?id=p001' });
+    if (posts.length > 0) {
+      Taro.navigateTo({ url: `/pages/detail/index?id=${posts[0].id}` });
+    } else {
+      Taro.showToast({ title: '还没有发布过倾诉', icon: 'none' });
+    }
   };
 
   const handleBlocked = () => {
@@ -27,6 +51,14 @@ const MinePage: React.FC = () => {
 
   const handleSettings = () => {
     Taro.showToast({ title: '功能开发中...', icon: 'none' });
+  };
+
+  const handleResponseTap = (resp: any) => {
+    if (resp.post && !resp.post.isBanned) {
+      Taro.navigateTo({ url: `/pages/detail/index?id=${resp.post.id}` });
+    } else {
+      Taro.showToast({ title: '该倾诉已不存在', icon: 'none' });
+    }
   };
 
   return (
@@ -95,6 +127,63 @@ const MinePage: React.FC = () => {
           </View>
           <Text className={styles.menuArrow}>›</Text>
         </View>
+
+        <View className={styles.menuItem} onClick={() => setShowResponses(!showResponses)}>
+          <View className={styles.menuLeft}>
+            <Text className={styles.menuEmoji}>💬</Text>
+            <Text className={styles.menuLabel}>我的回应</Text>
+          </View>
+          <View style={{ display: 'flex', alignItems: 'center', gap: '8rpx' }}>
+            {myResponsesWithPosts.length > 0 && (
+              <View className={styles.menuBadge}>
+                <Text className={styles.menuBadgeText}>{myResponsesWithPosts.length}</Text>
+              </View>
+            )}
+            <Text className={styles.menuArrow}>{showResponses ? 'ˇ' : '›'}</Text>
+          </View>
+        </View>
+
+        {showResponses && (
+          <View className={styles.responseList}>
+            {myResponsesWithPosts.length > 0 ? (
+              myResponsesWithPosts.map((item) => (
+                <View
+                  key={item.response.id}
+                  className={styles.responseRecord}
+                  onClick={() => handleResponseTap(item)}
+                >
+                  <View className={styles.responseRecordLeft}>
+                    <View className={styles.responseTypeIcon}>
+                      <Text className={styles.responseTypeEmoji}>
+                        {typeEmoji[item.response.type] || '💬'}
+                      </Text>
+                    </View>
+                    <View className={styles.responseRecordContent}>
+                      <Text className={styles.responseRecordText} numberOfLines={1}>
+                        {item.response.content}
+                      </Text>
+                      <View className={styles.responseRecordMeta}>
+                        {item.zone && (
+                          <Text className={styles.responseRecordZone}>
+                            {item.zone.emoji} {item.zone.name}
+                          </Text>
+                        )}
+                        <Text className={styles.responseRecordTime}>
+                          {formatTime(item.response.createdAt)}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <Text className={styles.responseRecordArrow}>›</Text>
+                </View>
+              ))
+            ) : (
+              <View className={styles.emptyResponses}>
+                <Text className={styles.emptyResponsesText}>还没有发出过回应，去温暖他人吧 💗</Text>
+              </View>
+            )}
+          </View>
+        )}
 
         <View className={styles.menuItem} onClick={handleBlocked}>
           <View className={styles.menuLeft}>

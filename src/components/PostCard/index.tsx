@@ -15,23 +15,29 @@ interface PostCardProps {
 
 const renderDoodlePath = (doodle: DoodlePath, imgWidth: number, imgHeight: number) => {
   if (doodle.points.length < 2) return null;
+  const xScale = 100 / imgWidth;
+  const yScale = 100 / imgHeight;
   const pathData = doodle.points
     .map((p, i) => {
-      const x = (p.x / imgWidth) * 100;
-      const y = (p.y / imgHeight) * 100;
-      return `${i === 0 ? 'M' : 'L'} ${x}% ${y}%`;
+      const x = p.x * xScale;
+      const y = p.y * yScale;
+      return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
     })
     .join(' ');
+
+  const maxDim = Math.max(imgWidth, imgHeight);
+  const strokeWidthPercent = (doodle.size / maxDim) * 100 * 1.2;
 
   return (
     <path
       key={doodle.id}
       d={pathData}
       stroke={doodle.color}
-      strokeWidth={(doodle.size / Math.max(imgWidth, imgHeight)) * 100}
+      strokeWidth={strokeWidthPercent}
       strokeLinecap="round"
       strokeLinejoin="round"
       fill="none"
+      vectorEffect="non-scaling-stroke"
     />
   );
 };

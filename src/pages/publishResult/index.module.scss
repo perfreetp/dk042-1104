@@ -1,0 +1,300 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F0EEFF 0%, $color-bg-page 40%);
+  padding: $spacing-xl $spacing-lg;
+  padding-bottom: 120rpx;
+}
+
+.successHeader {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+}
+
+.successIcon {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  @include flex-center;
+  margin: 0 auto $spacing-md;
+  box-shadow: 0 16rpx 32rpx rgba(108, 92, 231, 0.3);
+}
+
+.successEmoji {
+  font-size: 72rpx;
+}
+
+.successTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.successSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.postPreview {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+  position: relative;
+  overflow: hidden;
+}
+
+.previewLabel {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  background: #F0EEFF;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-md;
+}
+
+.previewLabelText {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.previewMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.previewZone {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  gap: 6rpx;
+}
+
+.previewZoneEmoji {
+  font-size: $font-size-sm;
+}
+
+.previewZoneName {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.previewMood {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: $radius-round;
+  @include flex-center;
+}
+
+.previewMoodEmoji {
+  font-size: $font-size-sm;
+}
+
+.previewContent {
+  font-size: $font-size-md;
+  line-height: $line-height-loose;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  word-break: break-all;
+}
+
+.previewImages {
+  margin-bottom: $spacing-md;
+}
+
+.previewImageWrap {
+  position: relative;
+  width: 100%;
+  border-radius: $radius-md;
+  overflow: hidden;
+  margin-bottom: $spacing-sm;
+}
+
+.previewImage {
+  display: block;
+  width: 100%;
+  border-radius: $radius-md;
+}
+
+.doodleOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.doodleSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.previewVotes {
+  margin-bottom: $spacing-md;
+}
+
+.previewVoteTitle {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.previewVoteList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.previewVoteItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+  border: 1rpx solid $color-border;
+}
+
+.previewVoteText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.previewCountdown {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  background: #FFF3E0;
+  border-radius: $radius-round;
+  margin-bottom: $spacing-md;
+}
+
+.previewCountdownText {
+  font-size: $font-size-xs;
+  color: #E17055;
+}
+
+.previewFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.previewTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.previewTags {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.previewDriftTag {
+  font-size: $font-size-xs;
+  color: $color-primary-light;
+  background: #F0EEFF;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-round;
+}
+
+.previewSelfTag {
+  font-size: $font-size-xs;
+  color: #00B894;
+  background: #E8F8F5;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-round;
+}
+
+.actionsRow {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.viewDetailBtn {
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-button;
+  @include flex-center;
+  box-shadow: 0 8rpx 20rpx rgba(108, 92, 231, 0.25);
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.viewDetailBtnText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.secondaryActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.backZoneBtn {
+  flex: 1;
+  height: $button-height-md;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  @include flex-center;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.backZoneBtnText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.publishAgainBtn {
+  flex: 1;
+  height: $button-height-md;
+  background: #F0EEFF;
+  border-radius: $radius-button;
+  @include flex-center;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.publishAgainBtnText {
+  font-size: $font-size-md;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.kindnessTip {
+  margin-top: $spacing-xl;
+  text-align: center;
+  padding: $spacing-md;
+  background: rgba(255, 234, 167, 0.3);
+  border-radius: $radius-md;
+}
+
+.kindnessTipText {
+  font-size: $font-size-xs;
+  color: #B29500;
+}

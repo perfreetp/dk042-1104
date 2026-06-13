@@ -221,3 +221,87 @@
   color: $color-text-white;
   font-weight: $font-weight-medium;
 }
+
+.responseList {
+  padding-left: $spacing-lg;
+  margin-bottom: $spacing-sm;
+}
+
+.responseRecord {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-xs;
+  border-left: 6rpx solid #F0EEFF;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.responseRecordLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  flex: 1;
+}
+
+.responseTypeIcon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: $radius-round;
+  background: #F0EEFF;
+  @include flex-center;
+  flex-shrink: 0;
+}
+
+.responseTypeEmoji {
+  font-size: 28rpx;
+}
+
+.responseRecordContent {
+  flex: 1;
+  overflow: hidden;
+}
+
+.responseRecordText {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.responseRecordMeta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.responseRecordZone {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.responseRecordTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.responseRecordArrow {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.emptyResponses {
+  padding: $spacing-lg;
+  text-align: center;
+}
+
+.emptyResponsesText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

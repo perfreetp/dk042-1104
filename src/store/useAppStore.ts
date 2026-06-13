@@ -5,15 +5,19 @@ import { mockPosts } from '@/data/posts';
 import { mockResponses } from '@/data/responses';
 import { generateId } from '@/utils';
 
+const RESPONSE_COOLDOWN_MS = 3000;
+
 interface AppState {
   user: UserProfile;
   currentZoneId: string;
   posts: Post[];
   responses: PostResponse[];
+  myResponses: PostResponse[];
   reports: ReportItem[];
   voteRecords: VoteRecord[];
   isVerified: boolean;
   isGuest: boolean;
+  _lastResponseAt: Record<string, number>;
 
   setVerified: (verified: boolean, circleCode?: string, circleName?: string) => void;
   setGuestMode: () => void;
@@ -31,8 +35,10 @@ interface AppState {
   resolveReport: (reportId: string, action: 'ban' | 'dismiss') => void;
   vote: (postId: string, optionId: string) => boolean;
   hasVoted: (postId: string) => string | null;
-  addResponse: (postId: string, type: PostResponse['type'], content: string) => void;
+  getVotedOption: (postId: string) => string | null;
+  addResponse: (postId: string, type: PostResponse['type'], content: string) => { success: boolean; reason?: string };
   getResponsesForPost: (postId: string) => PostResponse[];
+  canRespond: (postId: string, type: PostResponse['type']) => { allowed: boolean; remainingMs?: number };
   canPublish: () => boolean;
   resetAllState: () => void;
 }
@@ -65,10 +71,12 @@ export const useAppStore = create<AppState>()(
       currentZoneId: 'all',
       posts: [...mockPosts],
       responses: [...mockResponses],
+      myResponses: [],
       reports: [...defaultReports],
       voteRecords: [],
       isVerified: false,
       isGuest: false,
+      _lastResponseAt: {},
 
       setVerified: (verified, circleCode, circleName) =>
         set((state) => ({
@@ -208,7 +216,6 @@ export const useAppStore = create<AppState>()(
         const state = get();
         const existingVote = state.voteRecords.find((r) => r.postId === postId);
         if (existingVote) {
-          console.log('[Vote] 已经投过票了', { postId, existingVote });
           return false;
         }
 
@@ -232,7 +239,6 @@ export const useAppStore = create<AppState>()(
             },
           ],
         }));
-        console.log('[Vote] 投票成功', { postId, optionId });
         return true;
       },
 
@@ -241,29 +247,64 @@ export const useAppStore = create<AppState>()(
         return record ? record.optionId : null;
       },
 
-      addResponse: (postId, type, content) =>
-        set((state) => {
-          const newResponse: PostResponse = {
-            id: generateId(),
-            postId,
-            type,
-            content,
-            createdAt: new Date().toISOString(),
-            responderId: state.user.id,
-          };
+      getVotedOption: (postId) => {
+        const record = get().voteRecords.find((r) => r.postId === postId);
+        return record ? record.optionId : null;
+      },
+
+      canRespond: (postId, type) => {
+        const key = `${postId}_${type}`;
+        const lastTime = get()._lastResponseAt[key] || 0;
+        const now = Date.now();
+        const elapsed = now - lastTime;
+        if (elapsed < RESPONSE_COOLDOWN_MS) {
+          return { allowed: false, remainingMs: RESPONSE_COOLDOWN_MS - elapsed };
+        }
+        return { allowed: true };
+      },
+
+      addResponse: (postId, type, content) => {
+        const state = get();
+        const key = `${postId}_${type}`;
+        const lastTime = state._lastResponseAt[key] || 0;
+        const now = Date.now();
+        const elapsed = now - lastTime;
+        if (elapsed < RESPONSE_COOLDOWN_MS) {
           return {
-            responses: [...state.responses, newResponse],
-            posts: state.posts.map((p) =>
-              p.id === postId
-                ? { ...p, responseCount: p.responseCount + 1 }
-                : p
-            ),
-            user: {
-              ...state.user,
-              totalResponses: state.user.totalResponses + 1,
-            },
+            success: false,
+            reason: `操作过于频繁，请${Math.ceil((RESPONSE_COOLDOWN_MS - elapsed) / 1000)}秒后重试`,
           };
-        }),
+        }
+
+        const newResponse: PostResponse = {
+          id: generateId(),
+          postId,
+          type,
+          content,
+          createdAt: new Date().toISOString(),
+          responderId: state.user.id,
+        };
+
+        set((state) => ({
+          responses: [...state.responses, newResponse],
+          myResponses: [newResponse, ...state.myResponses],
+          posts: state.posts.map((p) =>
+            p.id === postId
+              ? { ...p, responseCount: p.responseCount + 1 }
+              : p
+          ),
+          user: {
+            ...state.user,
+            totalResponses: state.user.totalResponses + 1,
+          },
+          _lastResponseAt: {
+            ...state._lastResponseAt,
+            [key]: now,
+          },
+        }));
+
+        return { success: true };
+      },
 
       getResponsesForPost: (postId) => {
         return get().responses.filter((r) => r.postId === postId);
@@ -280,10 +321,12 @@ export const useAppStore = create<AppState>()(
           currentZoneId: 'all',
           posts: [...mockPosts],
           responses: [...mockResponses],
+          myResponses: [],
           reports: [...defaultReports],
           voteRecords: [],
           isVerified: false,
           isGuest: false,
+          _lastResponseAt: {},
         })),
     }),
     {
@@ -292,11 +335,13 @@ export const useAppStore = create<AppState>()(
         user: state.user,
         posts: state.posts,
         responses: state.responses,
+        myResponses: state.myResponses,
         reports: state.reports,
         voteRecords: state.voteRecords,
         isVerified: state.isVerified,
         isGuest: state.isGuest,
         currentZoneId: state.currentZoneId,
+        _lastResponseAt: state._lastResponseAt,
       }),
     }
   )

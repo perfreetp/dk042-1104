@@ -13,7 +13,7 @@ const responseTypeMap: Record<ResponseType, { emoji: string; label: string; colo
   hug: { emoji: '🤗', label: '抱抱', color: '#FF6B6B' },
   empathy: { emoji: '💛', label: '同感', color: '#FDCB6E' },
   suggestion: { emoji: '💡', label: '建议', color: '#74B9FF' },
-  private_request: { emoji: '🔒', label: '私密回复', color: '#A29BFE' },
+  private: { emoji: '🔒', label: '私密回复', color: '#A29BFE' },
 };
 
 const ResponseItem: React.FC<ResponseItemProps> = ({ response }) => {

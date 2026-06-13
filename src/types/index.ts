@@ -60,7 +60,7 @@ export interface Post {
   images: PostImage[];
 }
 
-export type ResponseType = 'hug' | 'empathy' | 'suggestion' | 'private_request';
+export type ResponseType = 'hug' | 'empathy' | 'suggestion' | 'private';
 
 export interface PostResponse {
   id: string;

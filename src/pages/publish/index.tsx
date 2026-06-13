@@ -13,6 +13,35 @@ import styles from './index.module.scss';
 const CANVAS_WIDTH = 690;
 const CANVAS_HEIGHT = 400;
 
+const renderDoodlePathForPreview = (doodle: DoodlePath) => {
+  if (doodle.points.length < 2) return null;
+  const xScale = 100 / CANVAS_WIDTH;
+  const yScale = 100 / CANVAS_HEIGHT;
+  const pathData = doodle.points
+    .map((p, i) => {
+      const x = p.x * xScale;
+      const y = p.y * yScale;
+      return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+    })
+    .join(' ');
+
+  const maxDim = Math.max(CANVAS_WIDTH, CANVAS_HEIGHT);
+  const strokeWidthPercent = (doodle.size / maxDim) * 100 * 1.2;
+
+  return (
+    <path
+      key={doodle.id}
+      d={pathData}
+      stroke={doodle.color}
+      strokeWidth={strokeWidthPercent}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+      vectorEffect="non-scaling-stroke"
+    />
+  );
+};
+
 const PublishPage: React.FC = () => {
   const { addPost, addKindness, incrementStreak, canPublish } = useAppStore();
 
@@ -426,8 +455,14 @@ const PublishPage: React.FC = () => {
                 style={{ width: '100%', height: '300rpx' }}
               />
               {doodles.length > 0 && (
-                <View className={styles.doodleBadge}>
-                  <Text className={styles.doodleBadgeText}>已涂抹 {doodles.length} 处</Text>
+                <View className={styles.doodleOverlay}>
+                  <svg
+                    className={styles.doodleSvg}
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                  >
+                    {doodles.map((d) => renderDoodlePathForPreview(d))}
+                  </svg>
                 </View>
               )}
             </View>

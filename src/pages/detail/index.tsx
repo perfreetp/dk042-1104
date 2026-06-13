@@ -40,7 +40,7 @@ const renderDoodlePath = (doodle: DoodlePath, imgWidth: number, imgHeight: numbe
 const DetailPage: React.FC = () => {
   const params = Taro.getCurrentInstance().router?.params;
   const postId = params?.id || 'p001';
-  const { posts, vote, hasVoted, getResponsesForPost, addKindness, addResponse } = useAppStore();
+  const { posts, vote, voteRecords, getResponsesForPost, addKindness, addResponse } = useAppStore();
 
   const post: Post | undefined = useMemo(
     () => posts.find((p) => p.id === postId),
@@ -52,10 +52,10 @@ const DetailPage: React.FC = () => {
     [getResponsesForPost, postId]
   );
 
-  const votedOptionId = useMemo(
-    () => hasVoted(postId),
-    [hasVoted, postId]
-  );
+  const votedOptionId = useMemo(() => {
+    const record = voteRecords.find((r) => r.postId === postId);
+    return record ? record.optionId : null;
+  }, [voteRecords, postId]);
 
   if (!post) {
     return (

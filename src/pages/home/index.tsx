@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
@@ -11,26 +11,23 @@ import styles from './index.module.scss';
 
 const HomePage: React.FC = () => {
   const { posts, canPublish, currentZoneId, setCurrentZone } = useAppStore();
-  const [currentZone, setCurrentZoneLocal] = useState<string>(currentZoneId || 'all');
 
   const filteredPosts = useMemo(() => {
     let result = posts.filter((p) => !p.isBanned);
-    if (currentZone !== 'all') {
-      result = result.filter((p) => p.zoneId === currentZone);
+    if (currentZoneId !== 'all') {
+      result = result.filter((p) => p.zoneId === currentZoneId);
     }
     const pinned = result.filter((p) => p.isPinned);
     const normal = result.filter((p) => !p.isPinned);
     return [...pinned, ...normal];
-  }, [posts, currentZone]);
+  }, [posts, currentZoneId]);
 
   const handleZoneClick = (zone: Zone) => {
     setCurrentZone(zone.id);
-    setCurrentZoneLocal(zone.id);
   };
 
   const handleAllClick = () => {
     setCurrentZone('all');
-    setCurrentZoneLocal('all');
   };
 
   const handlePostClick = (post: Post) => {
@@ -78,11 +75,11 @@ const HomePage: React.FC = () => {
       <ScrollView scrollX className={styles.zoneScroll}>
         <View className={styles.zoneList}>
           <View
-            className={classnames(styles.zoneAll, currentZone === 'all' && styles.zoneAllActive)}
+            className={classnames(styles.zoneAll, currentZoneId === 'all' && styles.zoneAllActive)}
             onClick={handleAllClick}
           >
             <Text
-              className={classnames(styles.zoneAllText, currentZone === 'all' && styles.zoneAllTextActive)}
+              className={classnames(styles.zoneAllText, currentZoneId === 'all' && styles.zoneAllTextActive)}
             >
               全部
             </Text>
@@ -91,7 +88,7 @@ const HomePage: React.FC = () => {
             <ZoneTag
               key={zone.id}
               zone={zone}
-              active={currentZone === zone.id}
+              active={currentZoneId === zone.id}
               onClick={handleZoneClick}
             />
           ))}
